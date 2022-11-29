@@ -7,9 +7,13 @@ import Cadastro from "./screens/Cadastro";
 import Login from "./screens/Login";
 import AreaLogada from "./screens/AreaLogada";
 
+/* FireBase */
+import { app } from "./firebaseConfig";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  console.log(app);
   return (
     <SafeAreaView style={estilos.containerSafe}>
       <StatusBar />
