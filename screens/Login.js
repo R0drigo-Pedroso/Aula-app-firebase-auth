@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Alert, Button, StyleSheet, TextInput, View } from "react-native";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../firebaseConfig";
 
 const Login = ({ navigation }) => {
@@ -16,11 +19,34 @@ const Login = ({ navigation }) => {
 
     signInWithEmailAndPassword(auth, email, senha)
       .then(() => {
-        navigation.navigate("AreaLogada");
+        navigation.replace("AreaLogada");
       })
       .catch((error) => {
-        console.log(error);
+        /* console.log(error); */
+        /* console.log(error.code); */
+
+        let mensagem;
+        switch (error.code) {
+          case "auth/user-not-found":
+            mensagem = "Usuário não encontrado! Faça um cadastro!";
+
+          case "auth/wrong-password":
+            mensagem = "Senha incorreta";
+            break;
+          default:
+            mensagem = "Houve um erro, tente novamente mais tarde";
+            break;
+        }
+        Alert.alert("Ops!", mensagem);
       });
+  };
+
+  const recsenhar = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert("Recuperar senha", "Verifique sua caixa de entrada");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -40,6 +66,7 @@ const Login = ({ navigation }) => {
         />
         <View style={estilos.botoes}>
           <Button title="Entre" color="green" onPress={login} />
+          <Button title="Recuparar senha" color="green" onPress={recsenhar} />
         </View>
       </View>
     </View>
