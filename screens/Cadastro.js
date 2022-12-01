@@ -18,10 +18,32 @@ const Cadastro = () => {
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, senha);
-    if (!email || !senha) {
-      Alert.alert("Atenção", "Devemos preencher todos campos");
-    }
+    createUserWithEmailAndPassword(auth, email, senha)
+      .then(() => {
+        Alert.alert("Cadastra", "Conta criado com sucesso!");
+      })
+      .catch((error) => {
+        console.log(error);
+        let mensagem;
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            mensagem = "E-mail já esta em uso";
+            break;
+
+          case "auth/invalid-email":
+            mensagem = "E-mail inválido";
+            break;
+
+          case "auth/weak-password":
+            mensagem = "Senha deve conter minimo 6 digitos";
+            break;
+
+          default:
+            mensagem = "Houve um erro, tente novamente mais tarde";
+            break;
+        }
+        Alert.alert("Atenção", mensagem);
+      });
   };
 
   return (
