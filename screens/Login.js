@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Alert, Button, StyleSheet, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  StyleSheet,
+  TextInput,
+  View,
+} from "react-native";
 
 import {
   sendPasswordResetEmail,
@@ -10,6 +17,7 @@ import { auth } from "../firebaseConfig";
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const login = () => {
     if (!email || !senha) {
@@ -17,6 +25,7 @@ const Login = ({ navigation }) => {
       return;
     }
 
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, senha)
       .then(() => {
         navigation.replace("AreaLogada");
@@ -38,6 +47,9 @@ const Login = ({ navigation }) => {
             break;
         }
         Alert.alert("Ops!", mensagem);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -65,7 +77,15 @@ const Login = ({ navigation }) => {
           secureTextEntry
         />
         <View style={estilos.botoes}>
-          <Button title="Entre" color="green" onPress={login} />
+          <Button
+            disabled={loading}
+            title="Entre"
+            color="green"
+            onPress={login}
+          />
+
+          {loading && <ActivityIndicator size="small" color="#0000ff" />}
+
           <Button title="Recuparar senha" color="green" onPress={recsenhar} />
         </View>
       </View>
