@@ -11,9 +11,10 @@ import {
 
 import { auth } from "../firebaseConfig";
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const Cadastro = ({ navigation }) => {
+  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,6 +32,11 @@ const Cadastro = ({ navigation }) => {
 
     createUserWithEmailAndPassword(auth, email, senha)
       .then(() => {
+        /* Ao fazer criação do novo usuário (com email e senha), aproveitamos para atualizar via updateProfile a propriedade d o auth que permite adicionar um nome ao usuário */
+        updateProfile(auth.currentUser, {
+          displayName: nome,
+        });
+
         Alert.alert("Cadastra", "Conta criado com sucesso!", [
           {
             text: "Não, quero voltar para o inicio",
@@ -78,6 +84,12 @@ const Cadastro = ({ navigation }) => {
   return (
     <View style={estilos.container}>
       <View style={estilos.formulario}>
+        <TextInput
+          placeholder="Nome"
+          style={estilos.input}
+          onChangeText={(valor) => setNome(valor)}
+        />
+
         <TextInput
           placeholder="E-mail"
           style={estilos.input}
