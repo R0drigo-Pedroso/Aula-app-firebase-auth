@@ -12,9 +12,12 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/b59b3158-3618-4640-80b3-8cda72345cca"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -32,6 +35,9 @@
         "projectId": "b59b3158-3618-4640-80b3-8cda72345cca"
       }
     },
-    "owner": "rodrigopedroso"
+    "owner": "rodrigopedroso",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }
